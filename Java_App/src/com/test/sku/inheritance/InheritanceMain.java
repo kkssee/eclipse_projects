@@ -1,0 +1,25 @@
+package com.test.sku.inheritance;
+
+public class InheritanceMain {
+
+	public static void main(String[] args) {
+		// Inheritance, implements
+		// MyClass extends Thread { }
+		// MyClass implements Runnable { }
+		/* 쉽게 하위 클래스를 파생하여 사용할 수 있다
+		 * 클래스 간의 관계(Parent/Child)를 설정할 수 있다
+		 * Is-A Relationship (A is a B)
+		 * A extends B ( A는 B이다(o), B는 A이다(x))
+		 * OOP 3대 특징(Inheritance, Polymorphism, Encapsulation
+		 */
+		
+		Item item = new Item();
+		item.setName("Momory");
+		item.setMade("한국 Digital");
+		item.setpDate("2024-07-12");
+		item.setPrice(52000);
+		
+		System.out.println(item);
+	}
+
+}
