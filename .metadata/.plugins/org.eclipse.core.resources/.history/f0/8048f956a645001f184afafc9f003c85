@@ -1,0 +1,19 @@
+package com.test.sku.superpet;
+
+import java.util.Scanner;
+
+public class UserIO {
+	static Scanner kbd = new Scanner(System.in);
+
+	public static String showMenu() {
+		System.out.print("add(a) list(s) find(f) update(u) delete(d) exit(x): ");
+		String menu = kbd.nextLine().trim();
+		return menu;
+	}
+
+	public static void addMenu() {
+		System.out.print("Cat(c), Dog(d), Snake(s), Hamster(h): ");
+		String menu = kbd.nextLine().trim();
+	}
+
+}

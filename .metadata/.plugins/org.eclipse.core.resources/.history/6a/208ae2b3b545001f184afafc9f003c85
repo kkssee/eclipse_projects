@@ -1,0 +1,33 @@
+package com.test.sku.superpet;
+
+public class Cat extends Pet {
+	double age;
+	String pattern;
+	
+	public Cat() { }
+	public Cat(int price, String breed, double age, String pattern) {
+		super(price, breed);
+		setAge(age);
+		setPattern(pattern);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString()+age+"\t"+pattern;
+	}
+	
+	public double getAge() {
+		return age;
+	}
+	public void setAge(double age) {
+		this.age = age;
+	}
+	public String getPattern() {
+		return pattern;
+	}
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+	
+	
+}

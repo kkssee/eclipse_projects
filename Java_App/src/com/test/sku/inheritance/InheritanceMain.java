@@ -1,5 +1,8 @@
 package com.test.sku.inheritance;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class InheritanceMain {
 
 	public static void main(String[] args) {
@@ -13,6 +16,26 @@ public class InheritanceMain {
 		 * OOP 3대 특징(Inheritance, Polymorphism, Encapsulation
 		 */
 		
+		//inheritanceTest01();
+		//inheritanceTest02();
+		//inheritanceTest03();
+		//inheritanceTest04();
+		
+		// Inheritance, Polymorphism, Encapsulation
+		// Polymorphism: Override, Overload
+		// Encapsulation: private, public, protected
+		
+		/* Pet Store
+		 * cat, dog, snake, hamster : Pet
+		 * Cat(int price, String species, float age, String pattern)
+		 * Dog(int price, String species, float age, float weight)
+		 * Snake(int price, String species, float size, String pattern)
+		 * Hamster(int price, String species, float size)
+		 * add(a) : Cat(c), Dog(d), Snake(s), Hamster(h)
+		 */
+	}
+
+	private static void inheritanceTest01() {
 		Item item = new Item();
 		item.setName("Momory");
 		item.setMade("한국 Digital");
@@ -21,5 +44,29 @@ public class InheritanceMain {
 		
 		System.out.println(item);
 	}
+	private static void inheritanceTest02() {
+		Mouse mouse = new Mouse("HighTech LightMouse", "HighTech", 15000, "2021-07-07", "Wireless");
+		
+		System.out.println(mouse);
+	}
+	private static void inheritanceTest03() {
+		Monitor monitor = new Monitor("Big Screen Monitor", "MakeItBig", 167000, "2020-10-14", 16.7F);
+		System.out.println(monitor);
+	}
+	private static void inheritanceTest04() {
+		// 이용자가 마우스, 모니터 한꺼번에 구입한 경우
+		List<Item> cart = new ArrayList<>();
+		Mouse mouse = new Mouse("HighTech LightMouse", "HighTech", 15000, "2021-07-07", "Wireless");
+		Monitor monitor = new Monitor("Big Screen Monitor", "MakeItBig", 167000, "2020-10-14", 16.7F);
 
+		cart.add(mouse);
+		cart.add(monitor);
+		
+		System.out.println("This is your cart !");
+		System.out.println("--------------------------------------------------------");
+		
+		for(int i = 0; i < cart.size(); i++) {
+			System.out.println(cart.get(i));
+		}
+	}
 }

@@ -1,0 +1,36 @@
+package com.test.sku.inheritance;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Mouse extends Item {
+	String wireless;
+
+	public Mouse() {} 
+ 	public Mouse(String name, String made, int price, Date pDate, String wireless) {
+		super(name, made, price, pDate);
+		setWireless(wireless);
+	}
+ 	public Mouse(String name, String made, int price, String sDate, String wireless) {
+ 		super(name, made, price, sDate);
+ 		setWireless(wireless);
+ 	}
+ 	
+ 	@Override
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String sDate = sdf.format(pDate);
+		return String.format("%s\t%s\t%d\t%s\t%s", name, made, price, sDate, wireless);
+	}
+
+
+	public String getWireless() {
+		return wireless;
+	}
+
+	public void setWireless(String wireless) {
+		this.wireless = wireless;
+	}
+	
+}

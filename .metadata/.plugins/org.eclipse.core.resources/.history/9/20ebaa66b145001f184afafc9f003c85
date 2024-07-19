@@ -1,0 +1,21 @@
+package com.test.sku.superpet;
+
+import java.util.Scanner;
+
+public class FileIO {
+	static Scanner kbd = new Scanner(System.in);
+	static String fpath = "C:/test/data/superPets.txt";
+	
+	public static boolean addPet() {
+		//List<Pet> list = getList();
+		//list.add(pet);
+		
+		
+		return false;
+	}
+
+	public static void addCat(Cat c) {
+		
+	}
+
+}

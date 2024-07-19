@@ -1,0 +1,18 @@
+package com.test.sku.superpet;
+
+import java.util.Scanner;
+
+public class UserIO {
+	static Scanner kbd = new Scanner(System.in);
+
+	public static String showMenu() {
+		System.out.print("추가(a) 목록(s) 검색(f) 수정(u) 삭제(d) 종료(x): ");
+		String menu = kbd.nextLine().trim();
+		return menu;
+	}
+
+	public static void addMenu() {
+		
+	}
+
+}

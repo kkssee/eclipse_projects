@@ -1,0 +1,5 @@
+package com.test.sku.inheritance;
+
+public class Snake extends Pet {
+
+}

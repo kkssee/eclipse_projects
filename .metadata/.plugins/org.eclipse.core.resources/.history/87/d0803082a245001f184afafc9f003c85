@@ -1,0 +1,34 @@
+package com.test.sku.inheritance;
+
+public class Snake extends Pet {
+	float size;
+	String pattern;
+	
+	
+	public Snake() { }
+	public Snake(int price, String species, float size, String pattern) {
+		super(price, species);
+		setSize(size);
+		setPattern(pattern);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString()+size+"\t"+pattern;
+	}
+	
+	public float getSize() {
+		return size;
+	}
+	private void setSize(float size) {
+		this.size = size;
+	}
+	public String getPattern() {
+		return pattern;
+	}
+	private void setPattern(String pattern) {
+		this.pattern = pattern;
+	} 
+	
+	
+}

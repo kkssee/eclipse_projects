@@ -53,7 +53,6 @@ public class FileIO
 				List<PetVO> list = new ArrayList<>();
 				overwrite(list);
 			}
-			
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(serPath));
 			List<PetVO> list = (List<PetVO>)ois.readObject();
 			ois.close();

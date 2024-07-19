@@ -1,0 +1,34 @@
+package com.test.sku.superpet;
+
+public class Dog extends Pet {
+	float age;
+	float weight;
+	
+	public Dog() { }
+	public Dog(int price, String breed, float age, float weight) {
+		super(price, breed);
+		setAge(age);
+		setWeight(weight);
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString()+age+"\t"+weight+" kg";
+	}
+	
+	public float getAge() {
+		return age;
+	}
+	public void setAge(float age) {
+		this.age = age;
+	}
+	public float getWeight() {
+		return weight;
+	}
+	public void setWeight(float weight) {
+		this.weight = weight;
+	}
+	
+	
+	
+}

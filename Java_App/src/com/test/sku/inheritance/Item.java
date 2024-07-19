@@ -2,6 +2,7 @@ package com.test.sku.inheritance;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Item {
@@ -17,13 +18,27 @@ public class Item {
 		this.price = price;
 		this.pDate = pDate;
 	}
+	public Item(String name, String made, int price, String sDate) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date pDate = null;
+		try {
+			pDate = sdf.parse(sDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.name = name;
+		this.made = made;
+		this.price = price;
+		this.pDate = pDate;
+	}
 	
 
 	@Override
 	public String toString() {
+		DecimalFormat nf = new DecimalFormat("#,###");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String sDate = sdf.format(pDate);
-		return String.format("%s\t%s\t%d\t%s", name, made, price, sDate);
+		return String.format("%s\t%s\t%s\t%s", name, made, nf.format(price), sDate);
 	}
 
 
@@ -59,7 +74,6 @@ public class Item {
 			p = sdf.parse(sDate);
 			setpDate(p);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

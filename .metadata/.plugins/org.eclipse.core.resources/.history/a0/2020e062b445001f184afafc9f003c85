@@ -1,0 +1,37 @@
+package com.test.sku.superpet;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class FileIO {
+	static Scanner kbd = new Scanner(System.in);
+	static String fpath = "C:/test/data/superPets.txt";
+	
+	public static boolean addPet(String m, String petInfo) {
+		String[] str = petInfo.split("//s+");
+		List<Pet> cart = new ArrayList<>();
+		
+		switch (m) {
+			case "c": {
+				Cat pet = new Cat(Integer.parseInt(str[0]), str[1], Float.parseFloat(str[2]), str[3]);
+				cart.add(pet); break;
+			} case "d": {
+				Dog pet = new Dog(Integer.parseInt(str[0]), str[1], Float.parseFloat(str[2]), Float.parseFloat(str[3]));
+				cart.add(pet); break;
+			} case "s": {
+				Snake pet = new Snake(Integer.parseInt(str[0]), str[1], Float.parseFloat(str[2]), str[3]);
+				cart.add(pet); break;
+			} case "h":  {
+				Hamster pet = new Hamster(Integer.parseInt(str[0]), str[1], Float.parseFloat(str[2]));
+				cart.add(pet); break;
+			}
+		}
+		
+		
+		
+		return false;
+	}
+
+
+}

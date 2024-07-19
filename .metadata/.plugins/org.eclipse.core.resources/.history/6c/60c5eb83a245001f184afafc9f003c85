@@ -1,0 +1,26 @@
+package com.test.sku.inheritance;
+
+public class Hamster extends Pet {
+	float size;
+
+	public Hamster() { }
+	public Hamster(int price, String species, float size) {
+		super(price, species);
+		setSize(size);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString()+size+" kg";
+	}
+	
+	public float getSize() {
+		return size;
+	}
+
+	private void setSize(float size) {
+		this.size = size;
+	}
+	
+	
+}

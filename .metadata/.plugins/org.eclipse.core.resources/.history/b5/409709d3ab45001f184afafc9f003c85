@@ -1,0 +1,69 @@
+package com.test.sku.superpet;
+
+import java.util.Scanner;
+
+public class UserIO {
+	static Scanner kbd = new Scanner(System.in);
+
+	public static String showMenu() {
+		System.out.print("add(a) list(s) find(f) update(u) delete(d) exit(x): ");
+		String menu = kbd.nextLine().trim();
+		return menu;
+	}
+
+	public static void addMenu() {
+		Pet p = new Pet();
+		Cat c = new Cat();
+		Dog d = new Dog();
+		Snake s = new Snake();
+		Hamster h = new Hamster();
+		
+		boolean added = false;
+		
+		System.out.print("Cat(c), Dog(d), Snake(s), Hamster(h): ");
+		String m = kbd.nextLine().trim();
+		System.out.print("Price: ");
+		int price = kbd.nextInt(); kbd.nextLine();
+		p.setPrice(price);
+		System.out.print("Breed: ");
+		String breed = kbd.nextLine();
+		p.setBreed(breed);
+		switch (m) {
+			case "c": {
+				System.out.print("Age: ");
+				float age = kbd.nextFloat(); kbd.nextLine();
+				c.setAge(age);
+				System.out.print("Pattern: ");
+				String pattern = kbd.nextLine();
+				c.setPattern(pattern);
+				FileIO.addCat(c); break;
+			}
+			case "d": {
+				System.out.print("Age: ");
+				float age = kbd.nextFloat(); kbd.nextLine();
+				d.setAge(age);
+				System.out.print("Weight: ");
+				float weight = kbd.nextFloat(); kbd.nextLine();
+				d.setWeight(weight); break;
+			}
+			case "s": {
+				System.out.print("Size: ");
+				float size = kbd.nextFloat(); kbd.nextLine();
+				s.setSize(size);
+				System.out.print("Pattern: ");
+				String pattern = kbd.nextLine();
+				s.setPattern(pattern); break;
+			}
+			case "h": {
+				System.out.print("Size: ");
+				float size = kbd.nextFloat(); kbd.nextLine();
+				h.setSize(size); break;
+			}
+			default: System.err.println("Wrong input !\n"); break;
+		}
+		
+		if(added) System.out.println("Pet added !\n");
+		else System.err.println("Addition failed !\n");
+	}
+
+}
