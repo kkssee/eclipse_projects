@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,30 +16,30 @@ public class FileIO {
 	
 	public static boolean addPet(String m, String petInfo) {
 		String[] str = petInfo.split("\\s+");
-		System.out.println("haha");
-		List<Pet> list = getList();
+		List<Pet> list = getList(); 
 		
 		switch (m) {
 			case "c": {
 				Cat pet = new Cat(Integer.parseInt(str[0]), str[1], Float.parseFloat(str[2]), str[3]);
-				list.add(pet); 
-				System.out.println(list);
-				overwrite(list); return true;
+				list.add(pet);
+				overwrite(list); return true;  
 			} case "d": {
 				Dog pet = new Dog(Integer.parseInt(str[0]), str[1], Float.parseFloat(str[2]), Float.parseFloat(str[3]));
-				list.add(pet); break;
+				list.add(pet);
+				overwrite(list); return true;  
 			} case "s": {
 				Snake pet = new Snake(Integer.parseInt(str[0]), str[1], Float.parseFloat(str[2]), str[3]);
-				list.add(pet); break;
+				list.add(pet);
+				overwrite(list); return true;  
 			} case "h":  {
 				Hamster pet = new Hamster(Integer.parseInt(str[0]), str[1], Float.parseFloat(str[2]));
-				list.add(pet); break;
+				list.add(pet);
+				overwrite(list); return true; 
 			}
-			
 		}	
 		return false;
 	}
-	private static boolean overwrite(List<Pet> list) 
+	public static boolean overwrite(List<Pet> list) 
 	{
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fpath)); 
@@ -68,6 +69,4 @@ public class FileIO {
 		}
 		return null;
 	}
-
-
 }

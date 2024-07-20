@@ -34,7 +34,7 @@ public class UserIO {
 				System.out.print("Price Breed Size: ");
 				s = kbd.nextLine().trim();
 				break;
-			} default: System.err.println("Wrong input !\n"); break;
+			} default: System.err.println("Wrong input!\n"); return;
 		}
 		boolean added = FileIO.addPet(m, s);
 		if(added) System.out.println("Pet added !\n"); 
@@ -44,8 +44,8 @@ public class UserIO {
 	public static void listMenu() 
 	{
 		System.out.println("\n\t     *** List ***");
-		//System.out.printf("%-5s%-15s%-12s%s%n", "no.", "species", "weight", "price");
-		System.out.println("---------------------------------------");  
+		System.out.printf("%-8s\t%-15s%-8s\t%-8s\t%-8s\t%s%n", "price", "breed", "age", "pattern", "weight", "size");
+		System.out.println("------------------------------------------------------------------------------");  
 		List<Pet> list = FileIO.getList();
 		
 		for(int i = 0; i < list.size(); i++)

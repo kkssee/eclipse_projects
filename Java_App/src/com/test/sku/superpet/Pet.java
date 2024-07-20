@@ -1,8 +1,9 @@
 package com.test.sku.superpet;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public class Pet {
+public class Pet implements Serializable{
 	
 	int price;
 	String breed;
@@ -19,7 +20,7 @@ public class Pet {
 		DecimalFormat nf = new DecimalFormat("#,###");
 		//DecimalFormat df = new DecimalFormat("#.##");
 
-		return String.format("%-10s\t%-15s", nf.format(price), breed);
+		return String.format("%-8s\t%-15s", nf.format(price), breed);
 	}
 	
 	public int getPrice() {
