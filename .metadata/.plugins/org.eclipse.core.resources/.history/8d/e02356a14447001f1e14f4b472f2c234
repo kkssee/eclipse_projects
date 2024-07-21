@@ -100,7 +100,7 @@ public class UserIO {
 		} else System.out.println("취소"); return;
 	}*/
 
-	/*public static void deleteMenu() {
+	public static void deleteMenu() {
 		System.out.print("삭제할 펫 breed: ");
 		
 		List<Pet> list = FileIO.getList();
@@ -116,6 +116,6 @@ public class UserIO {
 			if(deleted) System.out.println("\t\t삭제 성공");
 			else System.err.println("\t\t삭제 실패");
 		} else System.out.println("취소"); return;
-	}*/
+	}
 
 }

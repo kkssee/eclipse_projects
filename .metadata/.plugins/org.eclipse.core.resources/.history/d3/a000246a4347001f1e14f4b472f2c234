@@ -100,22 +100,9 @@ public class UserIO {
 		} else System.out.println("취소"); return;
 	}*/
 
-	/*public static void deleteMenu() {
-		System.out.print("삭제할 펫 breed: ");
+	public static void deleteMenu() {
+		// TODO Auto-generated method stub
 		
-		List<Pet> list = FileIO.getList();
-		String f = kbd.nextLine();
-		int idx = FileIO.findPet(f);
-		System.out.println(list.get(idx));
-		
-		System.out.print("삭제하시겠습니까?(Y/N) ");
-		String c = kbd.nextLine().trim();
-		
-		if(c.equals("Y")||c.equals("y")) {
-			boolean deleted = FileIO.deletePet(idx);
-			if(deleted) System.out.println("\t\t삭제 성공");
-			else System.err.println("\t\t삭제 실패");
-		} else System.out.println("취소"); return;
-	}*/
+	}
 
 }

@@ -14,15 +14,7 @@ public class Pet implements Serializable{
 		this.price = price;
 		this.breed = breed;
 	}
-	public Pet(String f) {
-		setBreed(f);
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		Pet other = (Pet) obj;
-		return this.getBreed().equals(other.getBreed());
-	}
+
 	@Override
 	public String toString() {
 		DecimalFormat nf = new DecimalFormat("#,###");

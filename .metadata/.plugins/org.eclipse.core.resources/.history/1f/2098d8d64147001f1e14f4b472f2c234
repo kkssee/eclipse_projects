@@ -3,6 +3,8 @@ package com.test.sku.superpet;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
+import com.test.sku.stream.Members;
+
 public class Pet implements Serializable{
 	
 	int price;

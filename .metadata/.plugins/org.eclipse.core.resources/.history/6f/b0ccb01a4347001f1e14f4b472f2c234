@@ -59,7 +59,7 @@ public class UserIO {
 	}
 
 	public static void findMenu() {
-		System.out.print("펫 breed로 검색: ");
+		System.out.print("펫 종으로 검색: ");
 		String f = kbd.nextLine();
 		
 		int idx = FileIO.findPet(f);
@@ -76,46 +76,5 @@ public class UserIO {
 			System.err.println("검색된 펫이 없습니다.");
 		}
 	}
-
-	/*public static void updateMenu() {
-		System.out.print("수정할 펫 breed: ");
-		
-		List<Pet> list = FileIO.getList();
-		String f = kbd.nextLine();
-		int idx = FileIO.findPet(f);
-		System.out.println(list.get(idx));
-		
-		System.out.print("수정하시겠습니까?(Y/N) ");
-		String c = kbd.nextLine().trim();
-		
-		if(c.equals("Y")||c.equals("y")) {
-			System.out.print(": ");
-			String title = kbd.nextLine();
-			System.out.print("내용: ");
-			String contents = kbd.nextLine();
-			
-			boolean saved = DataIO.updateBoard(idx, title, contents);
-			if(saved) System.out.println("\t\t수정 성공");
-			else System.err.println("\t\t수정 실패");
-		} else System.out.println("취소"); return;
-	}*/
-
-	/*public static void deleteMenu() {
-		System.out.print("삭제할 펫 breed: ");
-		
-		List<Pet> list = FileIO.getList();
-		String f = kbd.nextLine();
-		int idx = FileIO.findPet(f);
-		System.out.println(list.get(idx));
-		
-		System.out.print("삭제하시겠습니까?(Y/N) ");
-		String c = kbd.nextLine().trim();
-		
-		if(c.equals("Y")||c.equals("y")) {
-			boolean deleted = FileIO.deletePet(idx);
-			if(deleted) System.out.println("\t\t삭제 성공");
-			else System.err.println("\t\t삭제 실패");
-		} else System.out.println("취소"); return;
-	}*/
 
 }

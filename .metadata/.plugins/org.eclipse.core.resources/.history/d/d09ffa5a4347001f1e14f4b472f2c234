@@ -14,8 +14,8 @@ public class SuperPetMain {
 			case "a": UserIO.addMenu(); break;
 			case "s": UserIO.listMenu(); break;
 			case "f": UserIO.findMenu(); break;
-			//case "u": UserIO.updateMenu(); break;
-			//case "d": UserIO.deleteMenu(); break;
+			case "u": UserIO.updateMenu(); break;
+			case "d": UserIO.deleteMenu(); break;
 			case "x": go = false; break;
 			default: System.err.println("Wrong Input!\n");
 			}

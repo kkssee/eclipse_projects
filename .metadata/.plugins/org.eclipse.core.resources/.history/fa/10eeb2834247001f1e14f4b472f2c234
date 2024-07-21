@@ -20,7 +20,6 @@ public class SuperPetMain {
 			default: System.err.println("Wrong Input!\n");
 			}
 		}
-		System.out.println("\t\t프로그램 종료");
 	}
 	
 	private static void InitPets() {

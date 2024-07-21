@@ -13,14 +13,13 @@ public class SuperPetMain {
 			switch(m) {
 			case "a": UserIO.addMenu(); break;
 			case "s": UserIO.listMenu(); break;
-			case "f": UserIO.findMenu(); break;
-			//case "u": UserIO.updateMenu(); break;
-			//case "d": UserIO.deleteMenu(); break;
+			case "f": UserIO.findMenu();
+			//case "u": UserIO.updateMenu();
+			//case "d": UserIO.deleteMenu();
 			case "x": go = false; break;
 			default: System.err.println("Wrong Input!\n");
 			}
 		}
-		System.out.println("\t\t프로그램 종료");
 	}
 	
 	private static void InitPets() {
