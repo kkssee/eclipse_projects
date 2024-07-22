@@ -43,7 +43,9 @@ public class SuperPetMain {
 		cart.add(snake1);
 		cart.add(hamster1);
 		
-		for(Pet p : cart)
+		
+		
+		/*for(Pet p : cart)
 		{
 			if(p instanceof Cat) {
 				Cat c = (Cat) p;
@@ -58,8 +60,15 @@ public class SuperPetMain {
 				Hamster h = (Hamster) p;
 				System.out.printf("%d \t %s %.2f %n", h.price, h.breed, h.size);
 			}
-		}
+		}*/
 		
 		FileIO.overwrite(cart);
 	}
+	
+	//Generics method
+	/*
+	 static <T> int findIndex(List<T> list, T elem) {
+	 	return list.indexOf(elem);
+	 }
+	 */
 }

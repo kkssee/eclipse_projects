@@ -1,0 +1,12 @@
+package com.test.sku.network;
+
+import java.io.Serializable;
+
+public class ChatMsg implements Serializable {
+	String from;
+	String to;
+	String msg;
+	byte[] fdata;
+
+	
+}

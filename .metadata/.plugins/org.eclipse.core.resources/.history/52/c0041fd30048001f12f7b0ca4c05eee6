@@ -1,0 +1,30 @@
+package com.test.sku.network;
+
+import java.io.*;
+import java.util.*;
+
+public class ChatThread implements Runnable {
+	private Scanner kbd = new Scanner(System.in);
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	
+	public ChatThread() { }
+	public ChatThread(ObjectInputStream ois, ObjectOutputStream oos) {
+		this.ois = ois;
+		this.oos = oos;
+	}
+
+	@Override
+	public void run() {
+		while(true) {
+			try {
+				String msg = kbd.nextLine().trim();
+				ChatMsg cm = new ChatMsg(msg);
+				System.out.println(cm.msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+}
