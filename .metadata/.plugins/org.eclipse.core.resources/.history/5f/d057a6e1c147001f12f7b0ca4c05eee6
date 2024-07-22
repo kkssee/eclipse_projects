@@ -1,0 +1,56 @@
+package com.test.sku.superpet;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SuperPetMain {
+
+	public static void main(String[] args) {
+		boolean go = true;
+		InitPets();
+		while(go) {
+			String m = UserIO.showMenu();
+			switch(m) {
+			case "a": UserIO.addMenu(); break;
+			case "s": UserIO.listMenu(); break;
+			case "f": UserIO.findMenu(); break;
+			//case "u": UserIO.updateMenu(); break;
+			//case "d": UserIO.deleteMenu(); break;
+			case "x": go = false; break;
+			default: System.err.println("Wrong Input!\n");
+			}
+		}
+		System.out.println("\t\t프로그램 종료");
+	}
+	
+	private static void InitPets() {
+		List<Pet> cart = new ArrayList<>();
+		Cat cat1 = new Cat(170000, "Persian", 12, "stripped");
+		Cat cat2 = new Cat(520000, "Sphynx", 8, "Hairless");
+		Cat cat3 = new Cat(430000, "Maine Coon", 3, "Plain");
+		
+		Dog dog1 = new Dog(50000, "Shepherd", 7, 28.6F);
+		
+		Snake snake1 = new Snake(1100000, "Anaconda", 50.5F, "Spotted");
+		
+		Hamster hamster1 = new Hamster(15000, "Golden", 2.2F);
+		
+		cart.add(cat1); // Item 형으로 형변환 발생(up casting): 부모클래스에 선언된 변수/메소드를
+		cart.add(cat2);
+		cart.add(cat3);
+		cart.add(dog1);
+		cart.add(snake1);
+		cart.add(hamster1);
+		
+		for(Pet p : cart)
+		{
+			if(p instanceof Cat) {
+				Cat c = (Cat) p;
+				System.out.printf("%d \t %s %f %s %n", c.price, c.breed, c.age, c.pattern);
+			}
+			System.out.printf("%d \t %s %n", p.price, p.breed);
+		}
+		
+		FileIO.overwrite(cart);
+	}
+}

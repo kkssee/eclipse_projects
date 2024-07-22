@@ -25,22 +25,40 @@ public class SuperPetMain {
 	
 	private static void InitPets() {
 		List<Pet> cart = new ArrayList<>();
+		// Generics(메소드, 클래스)
 		Cat cat1 = new Cat(170000, "Persian", 12, "stripped");
 		Cat cat2 = new Cat(520000, "Sphynx", 8, "Hairless");
 		Cat cat3 = new Cat(430000, "Maine Coon", 3, "Plain");
 		
 		Dog dog1 = new Dog(50000, "Shepherd", 7, 28.6F);
 		
-		Snake snake1 = new Snake(1100000, "Anaconda", 50.5F, "Spotted");
+		Snake snake1 = new Snake(110000, "Anaconda", 50.5F, "Spotted");
 		
 		Hamster hamster1 = new Hamster(15000, "Golden", 2.2F);
 		
-		cart.add(cat1);
+		cart.add(cat1); // Item 형으로 형변환 발생(up casting): 부모클래스에 선언된 변수/메소드를
 		cart.add(cat2);
 		cart.add(cat3);
 		cart.add(dog1);
 		cart.add(snake1);
 		cart.add(hamster1);
+		
+		for(Pet p : cart)
+		{
+			if(p instanceof Cat) {
+				Cat c = (Cat) p;
+				System.out.printf("%d \t %s %.2f %s %n", c.price, c.breed, c.age, c.pattern);
+			} else if(p instanceof Dog) {
+				Dog d = (Dog) p;
+				System.out.printf("%d \t %s %.2f %.2f %n", d.price, d.breed, d.age, d.weight);
+			} else if(p instanceof Snake) {
+				Snake s = (Snake) p;
+				System.out.printf("%d \t %s %.2f %s %n", s.price, s.breed, s.size, s.pattern);
+			} else if(p instanceof Hamster) {
+				Hamster h = (Hamster) p;
+				System.out.printf("%d \t %s %.2f %n", h.price, h.breed, h.size);
+			}
+		}
 		
 		FileIO.overwrite(cart);
 	}
