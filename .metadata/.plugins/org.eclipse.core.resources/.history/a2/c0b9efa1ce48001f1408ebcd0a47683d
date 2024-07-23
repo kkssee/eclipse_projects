@@ -9,7 +9,7 @@ public class Server {
 	public static void main(String[] args) {
 		// multiple user chatting server
 		try {
-			ServerSocket ss = new ServerSocket(1039);
+			ServerSocket ss = new ServerSocket(3256);
 			while(true) {
 				System.out.println("서버 대기중");
 				Socket s = ss.accept();	// 클라이언트가 접속하면 통신용 소켓을 리턴

@@ -5,11 +5,10 @@ import java.io.Serializable;
 public class ChatMsg implements Serializable {
 	String uid;
 	String pwd;
-	String from;	// 주는 사람 id
-	String to;	    // 받을 사람 id
+	String from;
+	String to;
 	String msg;
 	boolean login;
-	boolean isSecret;
 	byte[] fdata;
 	
 	

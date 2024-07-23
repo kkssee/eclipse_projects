@@ -9,7 +9,6 @@ public class ChatMsg implements Serializable {
 	String to;	    // 받을 사람 id
 	String msg;
 	boolean login;
-	boolean isSecret;
 	byte[] fdata;
 	
 	

@@ -8,10 +8,6 @@ public class ReadMsg extends Thread {
 	String to;
 	
 	public ReadMsg() { }
-	public ReadMsg(String uid, ObjectInputStream ois) {
-		this.uid = uid;
-		this.ois = ois;
-	}
 	public ReadMsg(String uid, ObjectInputStream ois, String to) {
 		this.uid = uid;
 		this.ois = ois;
@@ -23,10 +19,11 @@ public class ReadMsg extends Thread {
 		try {
 			while(true) {
 				ChatMsg cm = (ChatMsg) ois.readObject();
-				if(cm.isSecret == true && this.uid.equals(cm.to)) {
+				if(this.uid.equals(cm.to)) {
 					System.out.printf("[%s(Whisper)] %s%n", cm.uid, cm.msg);
 					continue;
-				} else if(!this.uid.equals(cm.uid)) {
+				}
+				if(!(this.uid.equals(cm.uid))) {
 					System.out.printf("[%s] %s%n", cm.uid, cm.msg);
 				} else continue;
 			}

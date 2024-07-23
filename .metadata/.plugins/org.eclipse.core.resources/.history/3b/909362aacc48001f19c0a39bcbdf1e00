@@ -10,7 +10,7 @@ public class Client {
 	public static void main(String[] args) {
 		// 클라이언트 소켓 이용하여 서버에 접속
 		try {
-			Socket s = new Socket("220.67.113.226", 1039);
+			Socket s = new Socket("220.67.113.226", 7563);
 
 			InputStream in = s.getInputStream();
 			ObjectInputStream ois = new ObjectInputStream(in);
@@ -30,8 +30,7 @@ public class Client {
 			cm = (ChatMsg)ois.readObject();
 			
 			if(cm.msg.equals("로그인 성공")) {
-				//new ReadMsg(uid, ois).start();
-				new ReadMsg(uid, ois, uid).start();
+				new ReadMsg(uid, ois).start();
 				while(true) {
 					// Whisper(s) Public(p)
 					// s: input receiver id, msg
@@ -52,10 +51,10 @@ public class Client {
 						System.out.print("보낼 메시지: ");
 						msg = kbd.nextLine().trim();
 						cm.msg = msg;
-						cm.isSecret = true;
+						
 						oos.writeObject(cm);
 						oos.flush();
-						break;
+						continue;
 					}
 					case "p": {
 						System.out.print("메시지: ");

@@ -23,10 +23,10 @@ public class ReadMsg extends Thread {
 		try {
 			while(true) {
 				ChatMsg cm = (ChatMsg) ois.readObject();
-				if(cm.isSecret == true && this.uid.equals(cm.to)) {
+				if(this.uid.equals(cm.to)) {
 					System.out.printf("[%s(Whisper)] %s%n", cm.uid, cm.msg);
-					continue;
-				} else if(!this.uid.equals(cm.uid)) {
+					break;
+				} else if(!this.uid.equals(cm.uid) && !this.uid.equals(cm.to)) {
 					System.out.printf("[%s] %s%n", cm.uid, cm.msg);
 				} else continue;
 			}

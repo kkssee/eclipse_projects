@@ -34,16 +34,10 @@ public class ChatThread extends Thread {
 		try {
 			while(true) {
 				ChatMsg cm = (ChatMsg)ois.readObject();	// client exit->server socketexception
-				if(cm.isSecret) {
-					String receiver = cm.to;
-					user.get(receiver).writeObject(cm);
-					user.get(receiver).flush();
-					continue;
-				}
-				
 				Set<String> idSet = ChatThread.user.keySet();
 				Iterator <String> idIter = idSet.iterator();
 				ObjectOutputStream userOut = null;
+				//String uid = null;
 				while(idIter.hasNext()) {
 					String uid = idIter.next();
 					userOut = user.get(uid);

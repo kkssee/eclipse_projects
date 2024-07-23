@@ -36,6 +36,7 @@ public class ChatThread extends Thread {
 				ChatMsg cm = (ChatMsg)ois.readObject();	// client exit->server socketexception
 				if(cm.isSecret) {
 					String receiver = cm.to;
+					String msg = cm.msg;
 					user.get(receiver).writeObject(cm);
 					user.get(receiver).flush();
 					continue;
