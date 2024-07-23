@@ -10,7 +10,7 @@ public class Client {
 	public static void main(String[] args) {
 		// 클라이언트 소켓 이용하여 서버에 접속
 		try {
-			Socket s = new Socket("localhost", 6000);
+			Socket s = new Socket("220.67.113.226", 7563);
 
 			InputStream in = s.getInputStream();
 			ObjectInputStream ois = new ObjectInputStream(in);
@@ -30,31 +30,24 @@ public class Client {
 			cm = (ChatMsg)ois.readObject();
 			
 			if(cm.msg.equals("로그인 성공")) {
-				while(true)
-				{
-					System.out.print("msg: ");
-					String msg = kbd.nextLine();
-					cm.msg = msg;
-					oos.writeObject(cm);
-					oos.flush();
-					
-					cm = (ChatMsg)ois.readObject();
-					System.out.println(uid + ": " + cm.msg);
+				new ReadMsg(uid, ois).start();
+				while(true) {
+					System.out.print("메시지: ");
+					String msg = kbd.nextLine().trim();
+					if(msg.equalsIgnoreCase("x")) {
+						System.out.println("채팅 종료");
+						oos.close();
+						ois.close();
+						s.close();
+						break;
+					}
+					new WriteMsg(uid, oos, msg).start();
 				}
 			} else System.out.println("로그인 실패!");
-			
-			
-			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		System.out.println("클라이언트 종료");
-		
 	}
 
 }

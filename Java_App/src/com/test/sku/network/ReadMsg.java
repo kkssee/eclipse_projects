@@ -1,0 +1,28 @@
+package com.test.sku.network;
+
+import java.io.ObjectInputStream;
+
+public class ReadMsg extends Thread {
+	String uid;
+	ObjectInputStream ois;
+	
+	public ReadMsg() { }
+	public ReadMsg(String uid, ObjectInputStream ois) {
+		this.uid = uid;
+		this.ois = ois;
+	}
+
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				ChatMsg cm = (ChatMsg) ois.readObject();
+				if(!(this.uid.equals(cm.uid))) {
+					System.out.printf("[%s] %s%n", cm.uid, cm.msg);
+				} else continue;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

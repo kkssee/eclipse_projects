@@ -1,12 +1,21 @@
 package com.test.sku.network;
 
 import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class ChatThread extends Thread {
+	String uid;
+	private Socket s;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	
-	public ChatThread(ObjectInputStream ois, ObjectOutputStream oos) {
+	static Map<String, ObjectOutputStream> user = new HashMap<>();
+	
+	public ChatThread() { }
+	public ChatThread(String uid, Socket s, ObjectInputStream ois, ObjectOutputStream oos) {
+		this.uid = uid;
+		this.s = s;
 		this.ois = ois;
 		this.oos = oos;
 
@@ -24,14 +33,26 @@ public class ChatThread extends Thread {
 	public void run() {
 		try {
 			while(true) {
-				ChatMsg cm = (ChatMsg)ois.readObject();
-				oos.writeObject(cm);
-				oos.flush();
+				ChatMsg cm = (ChatMsg)ois.readObject();	// client exit->server socketexception
+				Set<String> idSet = ChatThread.user.keySet();
+				Iterator <String> idIter = idSet.iterator();
+				ObjectOutputStream userOut = null;
+				//String uid = null;
+				while(idIter.hasNext()) {
+					String uid = idIter.next();
+					userOut = user.get(uid);
+					userOut.writeObject(cm);
+					userOut.flush();
+				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			InetAddress ia = s.getInetAddress();
+			System.err.println(ia + " Client left");
+			System.out.println();
+			//user맵에서 퇴장한 이용자 정보 삭제
+			user.remove(uid);
 		} 
-		
+		System.err.println("ChatThread dead!");
 	}
 
 }

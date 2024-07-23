@@ -1,0 +1,35 @@
+package com.test.sku.network;
+
+import java.io.*;
+import java.util.Scanner;
+
+public class WriteMsg extends Thread {
+	static Scanner kbd = new Scanner(System.in);
+	ObjectOutputStream oos;
+	ChatMsg cm;
+	String msg;
+	String uid;
+	
+	WriteMsg(String uid, ObjectOutputStream oos) {
+		this.uid = uid;
+		this.oos = oos;
+	}
+	
+	@Override
+	public void run() {
+		System.out.print("msg: ");
+		String msg = kbd.nextLine().trim();
+		if(msg.equalsIgnoreCase("x")) {
+			System.out.println("채팅 종료");
+		}
+		cm.msg = msg;
+		try {
+			oos.writeObject(cm);
+			oos.flush();
+		} catch (Exception e) {
+			System.err.println("WriteMsg error");
+			e.printStackTrace();
+		}
+	}
+
+}

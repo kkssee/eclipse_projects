@@ -1,0 +1,25 @@
+package com.test.sku.network;
+
+import java.io.ObjectInputStream;
+
+public class ReadMsg extends Thread {
+	ObjectInputStream ois;
+	
+	public ReadMsg() { }
+	public ReadMsg(ObjectInputStream ois) {
+		this.ois = ois;
+	}
+
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				ChatMsg cm = (ChatMsg) ois.readObject();
+				System.out.println("\nReceived: " + cm.msg);
+			}
+		} catch (Exception e) {
+			System.err.println("ReadMsg error");
+			e.printStackTrace();
+		}
+	}
+}

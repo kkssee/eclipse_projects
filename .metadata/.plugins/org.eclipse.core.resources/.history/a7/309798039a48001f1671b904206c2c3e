@@ -1,0 +1,23 @@
+package com.test.sku.network;
+
+import java.io.ObjectInputStream;
+
+public class ReadMsg extends Thread {
+	ObjectInputStream ois;
+	ChatMsg cm;
+	
+	public ReadMsg(ObjectInputStream ois, ChatMsg cm) {
+		this.ois = ois;
+		this.cm = cm;
+	}
+
+	@Override
+	public void run() {
+		try {
+			cm = (ChatMsg)ois.readObject();
+			System.out.println(cm.msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

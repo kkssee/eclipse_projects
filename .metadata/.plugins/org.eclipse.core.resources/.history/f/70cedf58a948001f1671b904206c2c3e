@@ -1,0 +1,55 @@
+package com.test.sku.network;
+
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class Client {
+	static Scanner kbd = new Scanner(System.in);
+
+	public static void main(String[] args) {
+		// 클라이언트 소켓 이용하여 서버에 접속
+		try {
+			Socket s = new Socket("localhost", 7575);
+
+			InputStream in = s.getInputStream();
+			ObjectInputStream ois = new ObjectInputStream(in);
+			ChatMsg cm = (ChatMsg)ois.readObject();
+			System.out.print(cm.msg + ": ");
+			
+			String uid = kbd.next();
+			String pwd = kbd.nextLine().trim();
+			
+			// 출력 스트림
+			ChatMsg cm2 = new ChatMsg(true, uid, pwd);
+			OutputStream out = s.getOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(out);
+			oos.writeObject(cm2);
+			oos.flush();
+			
+			cm = (ChatMsg)ois.readObject();
+			
+			if(cm.msg.equals("로그인 성공")) {
+				while(true) {
+					new ReadMsg(ois).start();
+					
+					System.out.print("메시지: ");
+					String msg = kbd.nextLine().trim();
+					if(msg.equalsIgnoreCase("x")) {
+						System.out.println("채팅 종료");
+						break;
+					}
+					cm.msg = msg;
+					oos.writeObject(cm);
+					oos.flush();
+				}
+			} else System.out.println("로그인 실패!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("클라이언트 종료");
+		
+	}
+
+}
