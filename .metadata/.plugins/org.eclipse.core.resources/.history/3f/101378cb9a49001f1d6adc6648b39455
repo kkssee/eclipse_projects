@@ -26,9 +26,9 @@ public class UserWorkThread extends Thread {
 			
 			InputStream in = s.getInputStream();
 			ois = new ObjectInputStream(in);
+			
 			fv = (FileVO)ois.readObject();
 			System.out.println("읽음");
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
