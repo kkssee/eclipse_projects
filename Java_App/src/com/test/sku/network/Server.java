@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.*;
 
 public class Server {
-	static Scanner kbd = new Scanner(System.in);
 	public static void main(String[] args) {
 		// multiple user chatting server
 		try {

@@ -1,0 +1,188 @@
+package com.test.sku.serialization;
+
+import java.io.*;
+import java.util.*;
+
+public class SerializeMain {
+
+	public static void main(String[] args) {
+		// 문서관리 공유 시스템
+		/* 문서를 업로드하여 다른 이용자가 목록을 보고 골라서 파일을 다운로드할 수 있다
+		 * 업로드, 다운로드, 검색, 수정, 삭제, 종료
+		 * Socket, ServerSocket
+		 * 한 문서에 포함되는 속성: 번호, 제목, 파일명, 날짜, 작성자, 파일크기, 파일경로
+		 * List<Document>
+		 * 디렉토리에 포함된 파일의 리스트 추출하는 방법*/
+		//listForFiles();
+		listSerialization();
+		update02();
+		deserialization1();
+	} // end of main
+	
+	private static void listForFiles() {
+		String path = "C:/test/";
+		File f = new File(path);
+		String[] files = f.list();
+		for(int i = 0; i < files.length; i++) {
+			File tmp = new File(f, files[i]);
+			if(tmp.isDirectory()) {
+				System.out.println(files[i] + "\t-> Dir ");
+			} else {
+				System.out.println(files[i] + "\t\t-> File ");
+			}
+		}
+	}
+	
+	private static void searchFile() {	// 파일 찾고 내용물 출력
+		String key = "lalala.txt";
+		String path = "C:/test";
+		
+		File f = new File(path);
+		File[] files = f.listFiles();
+		for(int i = 0; i < files.length; i++) {
+			if(files[i].getName().equals(key)) {
+				System.out.printf("%s\t %d%n", files[i].getName(), files[i].length());
+			}
+		}
+		System.out.println("파일찾고 내용물 출력\n");
+	}
+	
+	private static void listSerialization() { //직렬화 메소드
+		List<String> names = new ArrayList<>();
+		names.add("jane");
+		names.add("john");
+		names.add("smith");
+		names.add("julie");
+		names.add("sean");
+		names.add("robert");
+		
+		for(int i = 0; i < names.size(); i++) {
+			System.out.println(names.get(i));
+		}
+		
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:/test/list.ser"));
+			oos.writeObject(names);
+			oos.close();
+			System.out.println("저장 완료");
+		} catch (Exception e) {
+			System.err.println("저장 실패");
+			e.printStackTrace();
+		} 
+	}
+	
+	private static List<String> deserialization() { // 역직렬화 메소드
+		String path = "C:/test/list.ser";
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
+			List<String> list = (List<String>)ois.readObject();
+			ois.close();
+			
+			System.out.println("\t역직렬화 후의 리스트 내용 보기");
+			for(int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i));
+			}
+			return list;
+		} catch (Exception e) {
+			System.err.println("파일 읽기 실패");
+			e.printStackTrace();
+		} 
+		return null;
+	}
+	private static List<Emp> deserialization1() { // 역직렬화 메소드
+		String path = "C:/test/list.ser";
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
+			List<Emp> list = (List<Emp>)ois.readObject();
+			ois.close();
+			
+			System.out.println("\t역직렬화 후의 리스트 내용 보기");
+			for(int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i));
+			}
+			return list;
+		} catch (Exception e) {
+			System.err.println("파일 읽기 실패");
+			e.printStackTrace();
+		} 
+		return null;
+	}
+	
+	private static void updateList() {
+		// smith -> james 로 변경하여 파일에 저장하고 다시 역직렬화하여 변경된 내용 확인
+		// 파일 읽어오는 메소드로 리스트 저장
+		// overwrite 메소드
+		
+		String s = "smith";
+		String j = "james";
+		
+		List<String> list = deserialization();
+		if(list!= null &&list.contains(s)) {
+			list.set(list.indexOf(s), j);
+			overwrite(list);
+		}
+		System.out.println("업데이트 완료\n");
+	}
+	
+	private static boolean overwrite(List<String> list) {
+		String path = "C:/test/list.ser";
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path)); 
+			oos.writeObject(list);
+			oos.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	private static boolean overwriteEmp(List<Emp> list) {
+		String path = "C:/test/list.ser";
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path)); 
+			oos.writeObject(list);
+			oos.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private static void update02() {
+		List<Emp> list = new ArrayList<>();
+		
+		Emp e1 = new Emp(11, "jane", 20, 3020);
+		Emp e2 = new Emp(12, "john", 10, 3300);
+		Emp e3 = new Emp(13, "smith", 30, 3800);
+		
+		list.add(e1);
+		list.add(e2);
+		list.add(e3);
+		
+		Emp key = new Emp(12);
+		if(list.contains(key)) {
+			int idx = list.indexOf(key);
+			Emp found = list.get(idx);
+			found.setSal(found.getSal()+200);
+		}
+		
+		key = new Emp(13);
+		if(list.contains(key)) {
+			int idx = list.indexOf(key);
+			Emp found = list.get(idx);
+			found.setDeptno(50);
+		}
+		overwriteEmp(list);
+		
+		File f = new File("C:/test/list.ser");
+		if(f.exists()) {
+			boolean deleted = f.delete();
+			if(deleted) {
+				System.out.println("삭제 성공");
+			} else {
+				System.out.println("삭제 실패");
+			}
+		}
+	}
+}

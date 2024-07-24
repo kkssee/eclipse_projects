@@ -6,7 +6,7 @@ public class FileIO {
 	static File file;
 	static Byte[] fdata;
 	static String savePath = "C:/test/downloads/";
-	static String aPath = "C:/test/sample/";
+	static String aPath = "C:/test/uploads/";
 	
 	public FileIO() { }
 	
