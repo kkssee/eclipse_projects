@@ -1,0 +1,17 @@
+package com.test.sku.network;
+
+import java.util.Scanner;
+
+public class FileIO {
+	static Scanner kbd = new Scanner(System.in);
+	static String fpath = "C:/test/data/superPets.txt";
+	
+	/*case "a": {
+	System.out.print("파일명: ");
+	String fname = kbd.nextLine().trim();
+	
+	
+	}*/
+
+	
+}

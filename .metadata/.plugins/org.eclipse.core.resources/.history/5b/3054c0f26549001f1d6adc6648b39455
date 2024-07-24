@@ -1,0 +1,45 @@
+package com.test.sku.network;
+
+import java.io.*;
+import java.util.*;
+
+public class ReadMsg extends Thread {
+	String uid;
+	ObjectInputStream ois;
+	String to;
+	static Scanner kbd = new Scanner(System.in);
+	static ChatMsg chatMsg;
+	
+	public ReadMsg() { }
+	public ReadMsg(String uid, ObjectInputStream ois, String to) {
+		this.uid = uid;
+		this.ois = ois;
+		this.to = to;
+	}
+
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				ChatMsg cm = (ChatMsg) ois.readObject();
+				if(cm.isSecret == true && this.uid.equals(cm.to)) {
+					System.out.printf("[%s(Whisper)] %s%n", cm.uid, cm.msg);
+					if(cm.fdata!= null && cm.fdata.length>0) {
+						chatMsg = cm;
+						System.out.print("첨부파일 다운로드(y/n) ");
+						
+					}
+					
+					continue;
+				} else if(!this.uid.equals(cm.uid)) {
+					System.out.printf("[%s] %s%n", cm.uid, cm.msg);
+				} else continue;
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+		
+		
+}

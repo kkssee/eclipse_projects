@@ -1,0 +1,53 @@
+package com.test.sku.network;
+
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.util.Scanner;
+
+public class ReadMsg extends Thread {
+	String uid;
+	ObjectInputStream ois;
+	String to;
+	static Scanner kbd = new Scanner(System.in);
+	
+	public ReadMsg() { }
+	public ReadMsg(String uid, ObjectInputStream ois) {
+		this.uid = uid;
+		this.ois = ois;
+	}
+	public ReadMsg(String uid, ObjectInputStream ois, String to) {
+		this.uid = uid;
+		this.ois = ois;
+		this.to = to;
+	}
+
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				ChatMsg cm = (ChatMsg) ois.readObject();
+				if(cm.isSecret == true && this.uid.equals(cm.to)) {
+					System.out.printf("[%s(Whisper)] %s%n", cm.uid, cm.msg);
+					System.out.print("첨부파일 다운로드(y/n) ");
+					String a = kbd.nextLine().trim();
+					if(a.equals("y")) {
+						File file = new File("C:/test/data/attachFile.txt");
+			            // 경로 없이 파일명만 작성할 경우 현재 디렉토리에 파일 생성함.
+//			            File file = new File("test.txt");
+			            
+			            // FileOutputStream 은 무조건 해당 파일을 생성한다. 존재하는 파일일 경우 덮어쓰기함.
+			            FileOutputStream fout = new FileOutputStream(file);
+			            while((data = System.in.read()) != -1) {
+			                // 입력받은 내용을 파일 내용으로 기록한다.
+			                fout.write(data);
+					}
+					continue;
+				} else if(!this.uid.equals(cm.uid)) {
+					System.out.printf("[%s] %s%n", cm.uid, cm.msg);
+				} else continue;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

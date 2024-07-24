@@ -1,0 +1,16 @@
+package com.test.sku.network;
+
+public class FileIO {
+	static String fname;
+	
+	
+	
+	/*case "a": {
+	System.out.print("파일명: ");
+	String fname = kbd.nextLine().trim();
+	
+	
+	}*/
+
+	
+}

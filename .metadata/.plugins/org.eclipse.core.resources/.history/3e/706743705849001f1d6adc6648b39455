@@ -1,0 +1,27 @@
+package com.test.sku.network;
+
+import java.io.*;
+
+public class FileIO {
+	static String fname;
+	static Byte[] fdata;
+	
+	public FileIO() { }
+	
+	public static byte[] attachFile(String fname) {
+		try {
+			FileInputStream fin = new FileInputStream(fname);
+			//int data = 0;
+			byte[] fdata = new byte[fin.read()];
+			/*while((data=fin.read(buf,0,buf.length))!= -1) { // 전체 읽어오기
+				System.out.println(new String(buf,0,data));
+				System.out.println("end--------------------------------------");
+			}*/
+			fin.close();
+			return fdata;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+}

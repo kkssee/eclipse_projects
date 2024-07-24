@@ -1,0 +1,23 @@
+package com.test.sku.network;
+
+import java.io.*;
+
+public class FileIO {
+	static File fname;
+	static Byte[] fdata;
+	
+	public FileIO() { }
+	
+	public static byte[] attachFile(File fname) {
+		try {
+			FileInputStream fin = new FileInputStream(fname);
+			byte[] fdata = new byte[(int)fname.length()];
+			fin.read(fdata);
+			fin.close();
+			return fdata;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+}

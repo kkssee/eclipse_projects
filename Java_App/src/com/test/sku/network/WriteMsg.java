@@ -9,12 +9,14 @@ public class WriteMsg extends Thread {
 	ChatMsg cm;
 	String msg;
 	String uid;
+	String fname;
 	
 	WriteMsg() { }
 	WriteMsg(String uid, ObjectOutputStream oos, String msg) {
 		this.uid = uid;
 		this.oos = oos;
 		this.msg = msg;
+		//this.fname = fname;
 	}
 	
 	@Override
@@ -23,6 +25,7 @@ public class WriteMsg extends Thread {
 			ChatMsg cm = new ChatMsg();
 			cm.uid = uid;
 			cm.msg = msg;
+			
 			oos.writeObject(cm);
 			oos.flush();
 		} catch (Exception e) {

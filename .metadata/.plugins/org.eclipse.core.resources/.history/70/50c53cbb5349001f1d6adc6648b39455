@@ -1,0 +1,64 @@
+package com.test.sku.network;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ChatThread extends Thread {
+	String uid;
+	private Socket s;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	
+	static Map<String, ObjectOutputStream> user = new HashMap<>();
+	
+	public ChatThread() { }
+	public ChatThread(String uid, Socket s, ObjectInputStream ois, ObjectOutputStream oos) {
+		this.uid = uid;
+		this.s = s;
+		this.ois = ois;
+		this.oos = oos;
+
+		ChatMsg cm = new ChatMsg("서버", "클라이언트", "로그인 성공");
+		
+		try {
+			oos.writeObject(cm);
+			oos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				ChatMsg cm = (ChatMsg)ois.readObject();	// client exit->server socketexception
+				if(cm.isSecret) {
+					String receiver = cm.to;
+					user.get(receiver).writeObject(cm);
+					user.get(receiver).flush();
+					continue;
+				}
+				
+				Set<String> idSet = ChatThread.user.keySet();
+				Iterator <String> idIter = idSet.iterator();
+				ObjectOutputStream userOut = null;
+				while(idIter.hasNext()) {
+					String uid = idIter.next();
+					userOut = user.get(uid);
+					userOut.writeObject(cm);
+					userOut.flush();
+				}
+			}
+		} catch (Exception e) {
+			InetAddress ia = s.getInetAddress();
+			System.err.println(ia + " Client left");
+			System.out.println();
+			//user맵에서 퇴장한 이용자 정보 삭제
+			user.remove(uid);
+		} 
+		System.err.println("ChatThread dead!");
+	}
+
+}

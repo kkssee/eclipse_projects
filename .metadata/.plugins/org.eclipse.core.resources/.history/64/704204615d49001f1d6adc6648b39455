@@ -1,0 +1,43 @@
+package com.test.sku.network;
+
+import java.io.Serializable;
+
+public class ChatMsg implements Serializable {
+	String uid;
+	String pwd;
+	String from;	// 주는 사람 id
+	String to;	    // 받을 사람 id
+	String msg;
+	boolean login;
+	boolean isSecret;
+	String fname;
+	byte[] fdata;
+	
+	
+	ChatMsg() {}
+	public ChatMsg(boolean login, String uid, String pwd) {
+		this.login = login;
+		this.uid = uid;
+		this.pwd = pwd;
+	}
+	public ChatMsg(String from, String to, String msg) {
+		this.from = from;
+		this.to = to;
+		this.msg = msg;
+	}
+	public ChatMsg(String from, String to, byte[] fdata) {
+		this.from = from;
+		this.to = to;
+		this.fdata = fdata;
+	}
+	public ChatMsg(String msg) {
+		this.msg = msg;
+	}
+	public ChatMsg(String uid, String to, String msg, boolean isSecret, byte[] fdata) {
+		this.uid = uid;
+		this.to = to;
+		this.msg = msg;
+		this.isSecret = isSecret;
+		this.fdata = fdata;
+	}
+}

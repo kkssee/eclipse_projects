@@ -10,7 +10,7 @@ public class Client {
 	public static void main(String[] args) {
 		// 클라이언트 소켓 이용하여 서버에 접속
 		try {
-			Socket s = new Socket("220.67.113.226", 1039);
+			Socket s = new Socket("220.67.113.226", 5112);
 
 			InputStream in = s.getInputStream();
 			ObjectInputStream ois = new ObjectInputStream(in);
@@ -30,29 +30,22 @@ public class Client {
 			cm = (ChatMsg)ois.readObject();
 			
 			if(cm.msg.equals("로그인 성공")) {
-				//new ReadMsg(uid, ois).start();
 				new ReadMsg(uid, ois, uid).start();
 				while(true) {
-					// Whisper(s) Public(p)
-					// s: input receiver id, msg
-					/* msg.isSecret = true;
-					 * msg.to = to;
-					 * msg.msg = msg;
-					 */
-					System.out.print("Whisper(s) Public(p): ");
+					System.out.print("Whisper(s) Public(p) file(a) exit(x): ");
 					String msg = kbd.nextLine().trim();
 					switch(msg) {
 					case "s": {
-						cm = new ChatMsg();
-						cm.uid = uid;
-						
 						System.out.print("보낼 유저: ");
 						String to = kbd.nextLine().trim();
-						cm.to = to;
 						System.out.print("보낼 메시지: ");
 						msg = kbd.nextLine().trim();
-						cm.msg = msg;
-						cm.isSecret = true;
+						System.out.print("파일명: ");
+						String fname = kbd.nextLine().trim();
+						
+						byte[] fdata = FileIO.attachFile(fname);
+						boolean isSecret = true;
+						cm = new ChatMsg(uid, to, msg, isSecret, fname, fdata);
 						oos.writeObject(cm);
 						oos.flush();
 						break;
@@ -68,6 +61,19 @@ public class Client {
 							break;
 						}
 						new WriteMsg(uid, oos, msg).start();
+					}
+					case "x": {
+						System.out.println("채팅 종료");
+						oos.close();
+						ois.close();
+						s.close();
+						break;
+					}
+					case "y": {
+						String fname = ReadMsg.chatMsg.fname;
+						byte[] fdata = ReadMsg.chatMsg.fdata;
+						FileIO.download(fname, fdata);
+						break;
 					}
 					}
 				}

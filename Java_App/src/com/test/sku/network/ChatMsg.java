@@ -10,6 +10,7 @@ public class ChatMsg implements Serializable {
 	String msg;
 	boolean login;
 	boolean isSecret;
+	String fname;
 	byte[] fdata;
 	
 	
@@ -31,5 +32,13 @@ public class ChatMsg implements Serializable {
 	}
 	public ChatMsg(String msg) {
 		this.msg = msg;
+	}
+	public ChatMsg(String uid, String to, String msg, boolean isSecret, String fname, byte[] fdata) {
+		this.uid = uid;
+		this.to = to;
+		this.msg = msg;
+		this.isSecret = isSecret;
+		this.fname = fname;
+		this.fdata = fdata;
 	}
 }
