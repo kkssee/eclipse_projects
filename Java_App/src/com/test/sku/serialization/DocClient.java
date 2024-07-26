@@ -1,70 +1,77 @@
 package com.test.sku.serialization;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.*;
 import java.util.*;
-
-import com.test.sku.network.ChatMsg;
-import com.test.sku.network.FileIO;
 
 public class DocClient {
 	static Scanner kbd = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		try {
-			Socket s = new Socket("220.67.113.226", 4854);
-			
-			InputStream in = s.getInputStream();
-			ObjectInputStream ois = new ObjectInputStream(in);
-			FileVO fv = (FileVO)ois.readObject();
-			System.out.print(fv.menu + ": ");
-			
-			String ms = kbd.nextLine().trim();
-			
+			Socket s = new Socket("220.67.113.226", 4545);
+			FileVO fv = new FileVO();
+
 			OutputStream out = s.getOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(out);
-			oos.writeObject(fv);
-			oos.flush();
+			InputStream in = s.getInputStream();
+			ObjectInputStream ois = new ObjectInputStream(in);
 			
-			switch(ms) {
-				case "a": {
-					System.out.print("파일명: ");
-					String fname = kbd.nextLine().trim();
-					byte[] fdata = FileIO.upload(fname);
-					
-					fv = new FileVO(fname, fdata);
-					oos.writeObject(fv);
-					oos.flush();
-					
-					break;
+			while(true) {
+				fv = (FileVO)ois.readObject();
+				System.out.print(fv.menu + ": ");
+				String ms = kbd.nextLine().trim();
+				
+				switch(ms) {
+					case "a": {
+						System.out.print("파일명: ");
+						String fname = kbd.nextLine().trim();
+						System.out.print("작성자: ");
+						String fauth = kbd.nextLine().trim();
+						System.out.print("설명: ");
+						String fdesc = kbd.nextLine().trim();
+						
+						byte[] fdata = FileIO.read(fv.fname);
+						fv = new FileVO(fname, fdata, fauth, fdesc);
+						fv.upload = true;
+						oos.writeObject(fv);
+						oos.flush();
+						break;
+					}
+					case "s": {
+						fv.list = true;
+						oos.writeObject(fv);
+						oos.flush();
+
+						System.out.println("*** 파일목록 ***");
+						System.out.println("-------------------------");
+						fv = (FileVO)ois.readObject();
+						for(int i = 0; i < fv.flist.size(); i++) {
+							System.out.println(fv.flist.get(i));
+						}
+						break;
+					}
+					case "f": {
+						
+						break;
+					}
+					case "u": {
+						
+						break;
+					}
+					case "d": {
+						
+						break;
+					}
+					case "x": {
+						System.out.println("프로그램 종료");
+						//oos.close();
+						ois.close();
+						s.close();
+						return;
+					}
+					default: System.err.println("Wrong input!\n"); break;
 				}
-				case "s": {
-					
-					break;
-				}
-				case "f": {
-					
-					break;
-				}
-				case "u": {
-					
-					break;
-				}
-				case "d": {
-					
-					break;
-				}
-				case "x": {
-					System.out.println("프로그램 종료");
-					//oos.close();
-					ois.close();
-					s.close();
-					break;
-				}
-				default: System.err.println("Wrong input!\n"); break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

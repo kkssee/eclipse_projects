@@ -1,21 +1,39 @@
 package com.test.sku.serialization;
 
-import java.io.Serializable;
+import java.io.*;
+import java.util.*;
 
 public class FileVO implements Serializable {
 	String menu;
 	
 	String fname;
 	byte[] fdata;
+	String fdesc;
+	String author;
+	
+	List<FileVO> flist = new ArrayList<>();
+	
+	boolean upload;
+	boolean list;
+	boolean find;
+	boolean update;
+	boolean delete;
+	boolean exit;
 	
 	public FileVO() { }
-	public FileVO(String fname, byte[] fdata) {
+	public FileVO(String fname, byte[] fdata, String author, String fdesc) {
 		this.fname = fname;
 		this.fdata = fdata;
+		this.author = author;
+		this.fdesc = fdesc;
 	}
 	public FileVO(String menu) {
 		this.menu = menu;
 	}
 	
-
+	@Override
+	public String toString() {
+		String s = String.format("%s\t%s\t%s\n", fname, fdesc, author);
+		return s;
+	}
 }

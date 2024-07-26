@@ -1,0 +1,39 @@
+package com.test.sku.Cereal;
+
+import java.io.*;
+import java.util.*;
+
+public class DocVO implements Serializable{
+	String menu;
+	
+	int fsize;
+	String fname;
+	String fdesc;
+	String author;
+	Date fdate;
+	byte[] fdata;
+	
+	FileInfo fi = new FileInfo();
+	
+	boolean upload;
+	boolean list;
+	boolean find;
+	boolean update;
+	boolean delete;
+	boolean exit;
+	
+	public DocVO() { }
+	public DocVO(String menu) {
+		this.menu = menu;
+	}
+	public DocVO(FileInfo fi) {
+		this.fi = fi;
+	}
+	public DocVO(String fname, byte[] fdata, String fauth, String fdesc) {
+		this.fname = fname;
+		this.fdata = fdata;
+		this.author = author;
+		this.fdesc = fdesc;
+	}
+	
+}

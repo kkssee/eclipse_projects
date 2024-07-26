@@ -1,0 +1,33 @@
+package com.test.sku.serialization;
+
+import java.io.Serializable;
+
+public class FileVO implements Serializable {
+	String menu;
+	
+	String fname;
+	byte[] fdata;
+	String fdesc;
+	String uid;
+	boolean upload = true;
+	
+	
+	public FileVO() { }
+	public FileVO(String fname, byte[] fdata) {
+		this.fname = fname;
+		this.fdata = fdata;
+	}
+	public FileVO(String menu) {
+		this.menu = menu;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
+	}
+	@Override
+	public String toString() {
+		String s = String.format("%s", fname);
+		return s;
+	}
+}

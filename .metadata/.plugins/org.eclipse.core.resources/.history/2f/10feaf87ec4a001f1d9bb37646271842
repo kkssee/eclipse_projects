@@ -1,0 +1,41 @@
+package com.test.sku.serialization;
+
+import java.io.Serializable;
+
+public class FileVO implements Serializable {
+	String menu;
+	
+	String fname;
+	byte[] fdata;
+	String fdesc;
+	String uid;
+	
+	boolean upload;
+	boolean list;
+	boolean find;
+	boolean update;
+	boolean delete;
+	boolean exit;
+	
+	public FileVO() { }
+	public FileVO(String fname, byte[] fdata) {
+		this.fname = fname;
+		this.fdata = fdata;
+	}
+	public FileVO(String menu) {
+		switch(menu) {
+		case "a": this.upload = true; break;
+		case "s": this.list = true; break;
+		case "f": this.find = true; break;
+		case "u": this.update = true; break;
+		case "d": this.delete = true; break;
+		case "x": this.exit = true; break;
+		}
+	}
+	
+	@Override
+	public String toString() {
+		String s = String.format("%s", fname);
+		return s;
+	}
+}

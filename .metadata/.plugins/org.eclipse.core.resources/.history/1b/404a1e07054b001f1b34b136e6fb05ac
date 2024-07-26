@@ -1,0 +1,13 @@
+package com.test.sku.Cereal;
+
+import java.io.*;
+import java.util.*;
+
+public class DocIO {
+
+	public static byte[] read(String fname) {
+		
+		return null;
+	}
+
+}

@@ -5,31 +5,55 @@ import java.net.*;
 
 public class UserWorkThread extends Thread {
 	Socket s;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
+	ObjectInputStream ois;
+	ObjectOutputStream oos;
 	
 	public UserWorkThread() { }
 	public UserWorkThread(Socket s) { 
 		this.s = s;
+		try {
+			oos = new ObjectOutputStream(s.getOutputStream());
+			ois = new ObjectInputStream(s.getInputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void run() {
-		OutputStream out;
 		try {
-			out = s.getOutputStream();
-			oos = new ObjectOutputStream(out);
-			FileVO fv = new FileVO("업로드(a) 목록(s) 검색(f)\n"
-									+ "수정(u) 삭제(d) 종료(x)");
-			oos.writeObject(fv);
-			oos.flush();
-			
-			InputStream in = s.getInputStream();
-			ois = new ObjectInputStream(in);
-			fv = (FileVO)ois.readObject();
-			System.out.println("읽음");
-			
-			
+			while(true) {
+				FileVO fv = new FileVO("업로드(a) 목록(s) 검색(f)\n"
+						+ "수정(u) 삭제(d) 종료(x)");
+				oos.writeObject(fv);
+				oos.flush();
+				
+				fv = (FileVO)ois.readObject();
+
+				if(fv.upload) {
+					FileIO.upload(fv);
+					fv.flist.add(fv);
+				}
+				else if(fv.list) {
+					oos.writeObject(fv);
+					oos.flush();
+					
+					
+				}
+				else if(fv.find) {
+					
+				}
+				else if(fv.update) {
+					
+				}
+				else if(fv.delete) {
+					
+				}
+				else if(fv.exit) {
+					System.out.println("클라이언트 연결 종료");
+					break;
+				} 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

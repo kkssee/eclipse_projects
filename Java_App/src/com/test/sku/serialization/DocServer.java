@@ -7,14 +7,17 @@ public class DocServer {
 
 	public static void main(String[] args) {
 		try {
-			ServerSocket ss = new ServerSocket(4854);
+			ServerSocket ss = new ServerSocket(4545);
+			
 			while(true) {
 				System.out.println("서버 대기중");
 				Socket s = ss.accept();
 				System.out.println("클라이언트 접속");
 				
 				new UserWorkThread(s).start();
+				break;
 			}
+			ss.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,0 +1,74 @@
+package com.test.sku.serialization;
+
+import java.io.*;
+import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserWorkThread extends Thread {
+	Socket s;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	static List<FileVO> list = new ArrayList<>();
+
+	public UserWorkThread() { }
+	public UserWorkThread(Socket s) { 
+		this.s = s;
+	}
+	
+	@Override
+	public void run() {
+		OutputStream out;
+		try {
+			while(true) {
+				out = s.getOutputStream();
+				oos = new ObjectOutputStream(out);
+				FileVO fv = new FileVO("업로드(a) 목록(s) 검색(f)\n"
+										+ "수정(u) 삭제(d) 종료(x)");
+				oos.writeObject(fv);
+				oos.flush();
+				
+				InputStream in = s.getInputStream();
+				ois = new ObjectInputStream(in);
+				String ms = (String)ois.readObject();
+				System.out.println("메뉴선택읽음");
+				
+				switch(ms) {
+					case "a": {
+						/*in = s.getInputStream();
+						ois = new ObjectInputStream(in);
+						fv = (FileVO)ois.readObject();
+						list.add(fv);*/
+						break;
+					}
+					case "s": {
+						
+						break;
+					}
+					case "f": {
+						
+						break;
+					}
+					case "u": {
+						
+						break;
+					}
+					case "d": {
+						
+						break;
+					}
+					case "x": {
+						
+						break;
+					}
+					default: break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+}

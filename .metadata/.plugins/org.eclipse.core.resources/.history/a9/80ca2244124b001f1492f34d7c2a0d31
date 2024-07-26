@@ -1,0 +1,24 @@
+package com.test.sku.Cereal;
+
+import java.io.*;
+
+public class FileInfo implements Serializable{
+	String fname;
+	byte[] fdata;
+	String fdesc;
+	String author;
+	
+	public FileInfo() { }
+	public FileInfo(String fname, byte[] fdata, String author, String fdesc) {
+		this.fname = fname;
+		this.fdata = fdata;
+		this.author = author;
+		this.fdesc = fdesc;
+	}
+	
+	@Override
+	public String toString() {
+		String s = String.format("%s\t%s\t%s", fname, fdesc, author);
+		return s;
+	}
+}

@@ -1,0 +1,10 @@
+package com.test.sku.Cereal;
+
+public class DocServer {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

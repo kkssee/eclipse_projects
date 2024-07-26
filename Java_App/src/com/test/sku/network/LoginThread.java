@@ -25,9 +25,8 @@ public class LoginThread implements Runnable {
 			oos.writeObject(cm);
 			oos.flush();
 
-			InputStream in = s.getInputStream();
+			InputStream in = s.getInputStream();	// 클라이언트에서 입력받은 아이디암호 저장
 			ois = new ObjectInputStream(in);
-			
 			ChatMsg cm2 = (ChatMsg)ois.readObject();
 			System.out.println(cm2.uid + " " + cm2.pwd);
 			
