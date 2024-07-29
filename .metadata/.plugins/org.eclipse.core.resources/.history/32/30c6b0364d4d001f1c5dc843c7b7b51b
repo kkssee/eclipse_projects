@@ -1,0 +1,12 @@
+package com.test.sku.pds;
+
+public class PDSRequest {
+	PDSVO pv;
+	
+	boolean upload;
+	boolean list;
+	boolean find;
+	boolean update;
+	boolean delete;
+	byte[] fdata;
+}

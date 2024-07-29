@@ -1,0 +1,86 @@
+package com.test.sku.pds;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ServerThread extends Thread {
+	private Socket s;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
+	private static List<PDSVO> list = new ArrayList<>();
+	private PDSResponse pResp;
+	private PDSRequest prq;
+	private FileIO fi = new FileIO();
+	
+	public ServerThread(Socket s) {
+		this.s = s;
+		try {			
+			 oos = new ObjectOutputStream(s.getOutputStream());
+			 ois = new ObjectInputStream(s.getInputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				pResp = new PDSResponse("파일 업로드(u), 목록보기(s), 상세보기(i),"
+									  + " 제목으로 검색(f), 수정(m), 삭제(d), 종료(x)");
+				oos.writeObject(pResp);
+				oos.flush();
+				
+				prq = (PDSRequest)ois.readObject();
+				if(prq.upload) {	// 파일 업로드
+					
+					fi.download(prq.pv);
+					Date date = new Date();
+					int nextFno;
+					Collections.sort(list);
+					if (!list.isEmpty()) {
+					    nextFno = list.get(list.size() - 1).getNo() + 1;
+					} else {
+					    nextFno = 1; 
+					}
+					PDSVO pv = new PDSVO(nextFno, prq.pv.fname, prq.pv.author, prq.pv.flen, date, prq.pv.desc, prq.pv.fdata);
+					list.add(pv);
+					fi.serialize(list);
+				} else if(prq.showList) {	// 목록보기
+					pResp = new PDSResponse();
+					list = fi.deserialize();
+					pResp.pList = list;
+					oos.writeObject(pResp);
+					oos.flush();
+				} else if(prq.detailList) {	// 상세보기 
+					pResp = new PDSResponse();
+					pResp.pList = fi.deserialize();
+					oos.writeObject(pResp);
+					oos.flush();
+				} else if(prq.find) {	// 파일명으로 검색 
+					pResp = new PDSResponse();
+					pResp.pv = prq.pv;
+					pResp.pList = fi.deserialize();
+					oos.writeObject(pResp);
+					oos.flush();	
+				} else if(prq.update) {	// 파일 수정
+					list = fi.deserialize();
+					int idx = list.indexOf(prq.pv);
+					list.get(idx).desc = prq.pv.desc;
+					list.set(idx, list.get(idx));
+					fi.serialize(list);
+				} else if(prq.delete) {	// 파일 삭제 
+					//fi.delete(prq.pv);
+					list = fi.deserialize();
+					int idx = list.indexOf(prq.pv);
+					list.remove(idx);
+					fi.serialize(list);
+				} 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+

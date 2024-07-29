@@ -1,0 +1,90 @@
+package com.test.sku.pds;
+
+import java.io.*;
+import java.util.*;
+
+public class FileIO {
+	public static String upPath = "C:/test/uploads/";
+	private static String downPath = "C:/test/downloads/";
+	public static String path = "list_fileinfo.ser";
+	
+	static List<PDSVO> list = new ArrayList<>();
+	
+	public static boolean fileExist(String fname) {
+		File f = new File(upPath + fname);      //있는가 없는가 확인 가능. 파일 오브젝트
+		if(!f.exists()) {
+			System.err.println("지정된 파일이 없습니다");
+			return false;
+		}
+			return true;
+	}
+	
+	public static byte[] upload(String fname) {					
+		try {
+			FileInputStream fin = new FileInputStream(upPath + fname);
+			byte[] imgData = fin.readAllBytes();
+			fin.close();
+			return imgData;
+		} catch (Exception e) {
+			e.printStackTrace();
+	    }
+		   return null;						
+	}
+	
+	public static void download(PDSVO pv) {
+		FileOutputStream fout;
+		try {
+			fout = new FileOutputStream(downPath +pv.fname);
+			fout.write(pv.fdata);
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static long size(String fname) {
+		File f = new File(upPath + fname);
+		long len = f.length();			
+		return len;
+	}
+	
+	public static void serialize(List<PDSVO> list) {
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(downPath + path));
+			oos.writeObject(list);
+			oos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+		
+	public	static List<PDSVO> deserialize() {
+			ObjectInputStream ois;
+			try {
+				ois = new ObjectInputStream(new FileInputStream(downPath + path));
+				List<PDSVO> list = (List<PDSVO>)ois.readObject();
+				ois.close();
+				return list;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			} 
+			
+	}
+
+	public static void delete(PDSVO pv) {
+		list = deserialize();
+		if(list.contains(pv)) {
+			File file = new File(downPath + pv.fname);
+			boolean deletedimg = file.delete();
+			if(deletedimg) {
+				System.out.println("파일 삭제 성공");
+			}
+		int idx = list.indexOf(pv);						
+		list.remove(idx);
+		FileIO.serialize(list);
+		}
+	}
+}

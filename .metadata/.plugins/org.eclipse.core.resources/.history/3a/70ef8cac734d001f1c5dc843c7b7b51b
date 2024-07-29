@@ -1,0 +1,126 @@
+package com.test.sku.pds;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ServerThread extends Thread {
+	private Socket s;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
+	
+	private static List<PDSVO> list = new ArrayList<>();
+	private PDSResponse pResp;
+	private PDSRequest prq;
+	
+	public ServerThread(Socket s) {
+		this.s = s;
+		try {			
+			 oos = new ObjectOutputStream(s.getOutputStream());
+			 ois = new ObjectInputStream(s.getInputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				pResp = new PDSResponse("파일 업로드(u), 목록보기(s), 상세보기(i),"
+									  + " 제목으로 검색(f), 수정(m), 삭제(d), 종료(x)");
+				oos.writeObject(pResp);
+				oos.flush();
+				
+				prq = (PDSRequest)ois.readObject();
+				if(prq.upload) {	
+					fileUpload(prq.pv);
+				} else if(prq.showList) {	
+					fileList();
+				} else if(prq.detailList) {	
+					fileDetail();
+				} else if(prq.find) {	
+					findFile(prq.pv);
+				} else if(prq.update) {	
+					updateFile(prq.pv);
+				} else if(prq.delete) {	
+					deleteFile(prq.pv);
+				} 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//closeResources();
+		}
+	}	// end of run()
+	
+	// 파일 업로드
+	private void fileUpload(PDSVO pv) throws IOException {
+		FileIO.download(prq.pv);
+		Date date = new Date();		
+		int nextFno;
+		Collections.sort(list);
+		if (!list.isEmpty()) {
+		    nextFno = list.get(list.size() - 1).getNo() + 1;
+		} else {
+		    nextFno = 1; 
+		}
+		pv = new PDSVO(nextFno, prq.pv.fname, prq.pv.author, prq.pv.flen, date, prq.pv.desc, prq.pv.fdata);
+		list.add(pv);
+		FileIO.serialize(list);
+	}
+	// 목록보기
+	private void fileList() throws IOException {
+		pResp = new PDSResponse();
+		list = FileIO.deserialize();
+		pResp.pList = list;
+		oos.writeObject(pResp);
+		oos.flush();
+	}
+	// 상세보기
+	private void fileDetail() throws IOException {
+		pResp = new PDSResponse();
+		pResp.pList = FileIO.deserialize();
+		oos.writeObject(pResp);
+		oos.flush();
+	}
+	// 파일명으로 검색 
+	private void findFile(PDSVO pv) throws IOException {
+		pResp = new PDSResponse();
+		pResp.pv = FileIO.find(prq.pv);
+		oos.writeObject(pResp);
+		oos.flush();	
+	}
+	// 파일 수정
+	private void updateFile(PDSVO pv) throws IOException {
+		String isUpdated;
+		boolean updated = FileIO.update(prq.pv);
+		if(updated) {
+			isUpdated = "수정 성공";
+		} else isUpdated = "수정 실패";
+		pResp = new PDSResponse(isUpdated);
+		oos.writeObject(pResp);
+		oos.flush();
+	}
+	// 파일 삭제 
+	private void deleteFile(PDSVO pv) throws IOException {
+		String isDeleted;
+		boolean deleted = FileIO.delete(prq.pv);
+		if(deleted) {
+			isDeleted = "삭제 성공";
+		} else isDeleted = "삭제 실패";
+		pResp = new PDSResponse(isDeleted);
+		oos.writeObject(pResp);
+		oos.flush();
+	}
+	// 스트림, 소켓 close
+	private void closeResources() {
+		try {
+			if (ois != null) ois.close();
+			if (oos != null) oos.close();
+			if (s != null) s.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

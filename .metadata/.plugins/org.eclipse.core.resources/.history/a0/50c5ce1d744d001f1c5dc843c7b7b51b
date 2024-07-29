@@ -1,0 +1,175 @@
+package com.test.sku.pds;
+
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class PDSClient {
+	private static Scanner kbd = new Scanner(System.in);
+	private static PDSVO pv = new PDSVO();
+	private static PDSResponse pResp = new PDSResponse();
+	private static PDSRequest prq = new PDSRequest();
+	private Socket s;
+	private ObjectInputStream ois;
+    private ObjectOutputStream oos;
+	
+	private static List<PDSVO> list = new ArrayList<>();
+	
+	public PDSClient(Socket s) {
+		this.s = s;
+		try {			
+			 oos = new ObjectOutputStream(s.getOutputStream());
+			 ois = new ObjectInputStream(s.getInputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		try {
+			s = new Socket("localhost", 1234);
+			System.out.println("서버에 접속");
+			
+			InputStream in = s.getInputStream();
+			ObjectInputStream ois = new ObjectInputStream(in);
+			OutputStream out = s.getOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(out); 
+			
+			while(true) {
+				PDSResponse pResp = (PDSResponse)ois.readObject();
+				System.out.println(pResp); 		// 메뉴 확인
+				String m = kbd.nextLine().trim();
+				
+				switch(m) {
+					case "u": cliUpload(); break;
+					case "s": cliList(); break;
+					case "i": cliDetail(); break;
+					case "f": cliFind(); break;
+					case "m": cliUpdate(); break;
+					case "d": cliDelete(); break;
+					case "x": System.out.println("프로그램 종료"); return;
+					default: System.err.println("잘못된 입력입니다."); break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeResources();
+		}
+	}	// end of main
+	
+	// 파일 업로드
+	private static void cliUpload() throws IOException {
+		System.out.println("파일명 작성자 설명:");
+		String input = kbd.nextLine();
+		String[] token = input.split("\\s+");
+   	 
+		if(!token[0].equals("") && token[0]!=null) {
+			boolean exist = FileIO.fileExist(token[0]);
+			if(exist) {	// 파일 존재 여부 확인 -> 성공시
+				byte[] bt = FileIO.upload(token[0]);
+				long len = FileIO.size(token[0]);
+				prq = new PDSRequest();
+				pv = new PDSVO();
+				pv.fname = token[0];
+				pv.author = token[1];
+				pv.desc = token[2];
+				pv.fdata = bt;
+				pv.flen =len;
+					
+				prq.pv = pv;
+				prq.upload=true;
+				oos.writeObject(prq);
+				oos.flush();								
+				System.out.println("파일 업로드 완료");	
+				return;								
+			}else {
+				System.out.println("파일이 존재하지 않습니다");
+				return;
+			}						  
+		}
+	}
+	// 목록보기
+	private static void cliList() throws IOException, ClassNotFoundException {
+        prq = new PDSRequest();
+        prq.showList = true;
+        oos.writeObject(prq);
+        oos.flush();
+
+        pResp = (PDSResponse) ois.readObject();
+        list = pResp.pList;
+        for (PDSVO pv : list) {
+            System.out.println(pv);
+        }
+    }
+	// 상세보기
+	private static void cliDetail() throws IOException, ClassNotFoundException {
+		prq = new PDSRequest();
+    	prq.showList = true;
+    	oos.writeObject(prq);
+    	oos.flush();
+     
+    	pResp = (PDSResponse)ois.readObject();
+    	list = pResp.pList;
+    	
+    	for (PDSVO pv : list) {
+            System.out.println(pv + " " + pv.desc);
+            String str = new String(pv.fdata, "UTF-8");
+            System.out.println(str);
+        }
+	}
+	// 파일명으로 검색
+	private static void cliFind() throws IOException, ClassNotFoundException {
+        prq = new PDSRequest();
+        System.out.println("파일명으로 검색: ");
+        String fname = kbd.nextLine();
+
+        prq.pv.fname = fname;
+        prq.find = true;
+        oos.writeObject(prq);
+        oos.flush();
+
+        pResp = (PDSResponse) ois.readObject();
+        System.out.println(pResp.pv);
+    }
+	// 파일 수정
+	private static void cliUpdate() throws IOException {
+		pv = new PDSVO();
+		prq = new PDSRequest();	
+		
+		System.out.println("수정할 파일명:");
+		String fname = kbd.nextLine(); 
+	    System.out.println("설명 수정");
+	    String desc = kbd.nextLine();
+	    
+	   	pv.fname = fname;
+	   	pv.desc = desc;
+	   	
+	   	prq.pv = pv;
+	   	prq.update = true;
+	   	
+	   	oos.writeObject(prq);
+	   	oos.flush();
+	}
+	// 파일 삭제
+	private static void cliDelete() throws IOException {
+		pv = new PDSVO();
+		prq = new PDSRequest();
+    	System.out.println("삭제할 파일명");
+    	String fname = kbd.nextLine();
+    	pv.fname = fname;
+    	prq.pv = pv;
+    	prq.delete = true;
+    	oos.writeObject(prq);
+	}
+	// 스트림, 소켓 close
+	 private static void closeResources() {
+	 	try {
+	 		if (ois != null) ois.close();
+	 		if (oos != null) oos.close();
+	 		if (s != null) s.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+	 	}
+	}
+}

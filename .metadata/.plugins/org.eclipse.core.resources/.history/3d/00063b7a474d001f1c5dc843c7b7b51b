@@ -1,0 +1,25 @@
+package com.test.sku.pds;
+
+import java.io.*;
+import java.net.*;
+
+public class PDSServer {
+
+	public static void main(String[] args) {
+		try {
+			ServerSocket ss = new ServerSocket(1234);
+			while(true) {
+				System.out.println("서버대기중...");
+				Socket s = ss.accept();
+				System.out.println("클라이언트 접속됨");
+				
+				//new ServerThread(s).start();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("서버 종료");
+	}	// end of main
+
+}

@@ -1,0 +1,21 @@
+package com.test.sku.pds;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class PDSResponse implements Serializable{
+	String msg;
+	List<PDSVO> pList;
+	PDSVO pv;
+
+	public PDSResponse() { }
+	public PDSResponse(String msg) {
+		this.msg = msg;
+	}
+	
+	@Override
+	public String toString() {
+		String s = String.format("%s", msg);
+		return s;
+	}
+}

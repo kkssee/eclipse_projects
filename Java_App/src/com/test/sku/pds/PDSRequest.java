@@ -1,0 +1,18 @@
+package com.test.sku.pds;
+
+import java.io.Serializable;
+
+public class PDSRequest implements Serializable{
+	PDSVO pv;
+	
+	boolean upload;
+	boolean showList;
+	boolean detailList;
+	boolean find;
+	boolean update;
+	boolean delete;
+	
+	public PDSRequest() {
+		this.pv = new PDSVO();
+	}
+}

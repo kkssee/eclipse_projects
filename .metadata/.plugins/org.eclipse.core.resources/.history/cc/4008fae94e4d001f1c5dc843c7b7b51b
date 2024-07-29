@@ -1,0 +1,15 @@
+package com.test.sku.pds;
+
+import java.util.List;
+
+public class PDSResponse {
+	String msg;
+	List<PDSVO> pList;
+
+	public PDSResponse() { }
+	public PDSResponse(String msg) {
+		this.msg = msg;
+	}
+	
+	
+}

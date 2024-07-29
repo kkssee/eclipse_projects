@@ -1,0 +1,104 @@
+package com.test.sku.pds;
+
+import java.io.*;
+import java.util.*;
+
+public class FileIO {
+	public static String upPath = "C:/test/uploads/";
+	private static String downPath = "C:/test/downloads/";
+	public static String path = "pds.obj";
+	
+	static List<PDSVO> list = new ArrayList<>();
+	
+	public static boolean fileExist(String fname) {	// 파일 존재 여부
+		File f = new File(upPath + fname);
+		if(!f.exists()) {
+			System.err.println("지정된 파일이 없습니다");
+			return false;
+		} return true;
+	}
+	public static byte[] upload(String fname) {	// 파일 사이즈 확인			
+		try {
+			FileInputStream fin = new FileInputStream(upPath + fname);
+			byte[] imgData = fin.readAllBytes();
+			fin.close();
+			return imgData;
+		} catch (Exception e) {
+			e.printStackTrace();
+	    } return null;						
+	}
+	public static void download(PDSVO pv) {	// 서버 로컬에 파일 다운
+		FileOutputStream fout;
+		try {
+			fout = new FileOutputStream(downPath + pv.fname);
+			fout.write(pv.fdata);
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static long size(String fname) {
+		File f = new File(upPath + fname);
+		long len = f.length();			
+		return len;
+	}
+	
+	public static void serialize(List<PDSVO> list) { // 직렬화
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(downPath + path));
+			oos.writeObject(list);
+			oos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	public static List<PDSVO> deserialize() {	// 역직렬화
+		ObjectInputStream ois;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(downPath + path));
+			List<PDSVO> list = (List<PDSVO>)ois.readObject();
+			ois.close();
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} 
+	}
+	public static PDSVO find(PDSVO pv) { // 파일명으로 검색 
+		PDSVO key = new PDSVO(pv.fname);
+		list = deserialize();
+		if(list.contains(key)) {
+			int idx = list.indexOf(key);
+			pv = list.get(idx);	
+			return pv;
+		} return null;
+	}
+	public static boolean update(PDSVO pv) { // 파일 수정
+		list = deserialize();
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).fname.equals(pv.fname)) {
+				list.get(i).setDesc(pv.desc);
+				//list.set(i,list.get(i));
+				serialize(list);
+				return true;
+			}
+		}
+        return false;
+	}
+	
+	public static boolean delete(PDSVO pv) { // 파일 삭제 
+		list = deserialize();
+		if(list.contains(pv)) {
+			File file = new File(downPath + pv.fname);
+			boolean deletedimg = file.delete();
+			if(deletedimg) {
+				System.out.println("파일 삭제 성공");
+			}
+			int idx = list.indexOf(pv);						
+			list.remove(idx);
+			FileIO.serialize(list);
+			return true;
+		} return false;
+	}
+}

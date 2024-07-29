@@ -5,4 +5,5 @@
     <fullyQualifiedTypeName name="java.io.File"/>
     <fullyQualifiedTypeName name="java.io.ObjectOutput"/>
     <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.time.LocalDate"/>
 </qualifiedTypeNameHistroy>

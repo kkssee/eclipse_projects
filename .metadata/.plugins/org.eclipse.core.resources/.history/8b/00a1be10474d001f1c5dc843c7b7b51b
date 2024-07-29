@@ -1,0 +1,19 @@
+package com.test.sku.cmon;
+
+import java.io.Serializable;
+
+public class PDSVO implements Serializable {
+	int no;
+	long flen;
+	String fname;
+	String author;
+	String desc;
+	
+	boolean upload;
+	boolean list;
+	boolean find;
+	boolean update;
+	boolean delete;
+	byte[] fdata;
+	
+}

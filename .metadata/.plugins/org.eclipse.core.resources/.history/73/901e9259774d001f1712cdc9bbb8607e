@@ -1,0 +1,94 @@
+package com.test.sku.pds;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ServerThread extends Thread {
+	private Socket s;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	
+	
+	private static List<PDSVO> list = new ArrayList<>();
+	private PDSResponse pResp;
+	private PDSRequest prq;
+	
+	//public static String upPath = "C:/test/uploads/";
+	//public static String downPath = "";
+	
+	public ServerThread(Socket s) {
+		this.s = s;
+		try {			
+			 oos = new ObjectOutputStream(s.getOutputStream());
+			 ois = new ObjectInputStream(s.getInputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				pResp = new PDSResponse("파일 업로드(u), 목록보기(s), 상세보기(i),"
+									  + " 제목으로 검색(f), 수정(m), 삭제(d), 종료(x)");
+				oos.writeObject(pResp);
+				oos.flush();
+				
+				prq = (PDSRequest)ois.readObject();
+				if(prq.upload) {	// 파일 업로드
+					FileIO.download(prq.pv);
+					Date date = new Date();		
+					int nextFno;
+					Collections.sort(list);
+					if (!list.isEmpty()) {
+					    nextFno = list.get(list.size() - 1).getNo() + 1;
+					} else {
+					    nextFno = 1; 
+					}
+					PDSVO pv = new PDSVO(nextFno, prq.pv.fname, prq.pv.author, prq.pv.flen, date, prq.pv.desc, prq.pv.fdata);
+					list.add(pv);
+					FileIO.serialize(list);
+				} else if(prq.showList) {	// 목록보기
+					pResp = new PDSResponse();
+					list = FileIO.deserialize();
+					pResp.pList = list;
+					oos.writeObject(pResp);
+					oos.flush();
+				} else if(prq.detailList) {	// 상세보기 
+					pResp = new PDSResponse();
+					pResp.pList = FileIO.deserialize();
+					
+					oos.writeObject(pResp);
+					oos.flush();
+				} else if(prq.find) {	// 파일명으로 검색 
+					pResp = new PDSResponse();
+					pResp.pv = FileIO.find(prq.pv);
+					oos.writeObject(pResp);
+					oos.flush();	
+				} else if(prq.update) {	// 파일 수정
+					String isUpdated;
+					boolean updated = FileIO.update(prq.pv);
+					if(updated) {
+						isUpdated = "수정 성공";
+					} else isUpdated = "수정 실패";
+					pResp = new PDSResponse(isUpdated);
+					oos.writeObject(pResp);
+					oos.flush();
+				} else if(prq.delete) {	// 파일 삭제 
+					String isDeleted;
+					boolean deleted = FileIO.delete(prq.pv);
+					if(deleted) {
+						isDeleted = "삭제 성공";
+					} else isDeleted = "삭제 실패";
+					pResp = new PDSResponse(isDeleted);
+					oos.writeObject(pResp);
+					oos.flush();
+				} 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
