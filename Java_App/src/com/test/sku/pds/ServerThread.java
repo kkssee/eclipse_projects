@@ -34,7 +34,6 @@ public class ServerThread extends Thread {
 				
 				prq = (PDSRequest)ois.readObject();
 				if(prq.upload) {	// 파일 업로드
-					
 					fi.download(prq.pv);
 					Date date = new Date();
 					int nextFno;
@@ -71,7 +70,6 @@ public class ServerThread extends Thread {
 					list.set(idx, list.get(idx));
 					fi.serialize(list);
 				} else if(prq.delete) {	// 파일 삭제 
-					//fi.delete(prq.pv);
 					list = fi.deserialize();
 					int idx = list.indexOf(prq.pv);
 					list.remove(idx);
