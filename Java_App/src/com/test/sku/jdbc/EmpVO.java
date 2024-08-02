@@ -22,8 +22,8 @@ public class EmpVO {
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String sDate = sdf.format(hiredate);
-		String s = String.format("%d\t%s\t%s\t%d\t%s\t%d", 
-				empno,ename,sal,deptno,job,sDate);
+		String s = String.format("%d\t%-15s\t%d\t%s\t%-15s\t%-10s\t%-15d", 
+				empno,ename,sal,deptno,job,sDate,mgr);
 		return s;
 	}
 	
@@ -48,7 +48,7 @@ public class EmpVO {
 	public String getJob() {
 		return job;
 	}
-	public java.sql.Date getHiredate() {
+	public Date getHiredate() {
 		return hiredate;
 	}
 	public int getMgr() {

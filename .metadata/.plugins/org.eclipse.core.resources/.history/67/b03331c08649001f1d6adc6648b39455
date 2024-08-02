@@ -1,8 +1,0 @@
-package com.test.sku.serialization;
-
-public class Emp {
-	private int empno;
-	private String ename;
-	private int deptno;
-	private int sal;
-}
