@@ -34,6 +34,28 @@ public class EmpDAO2
 		}return null;
 	}
 	
+	public Map<Integer, String[]> getEmpsByDept() {
+		conn = getConn();
+		
+		String sql = "SELECT deptno, COUNT(empno) \"사원수\", LISTAGG(ename,',') \r\n"
+				+ "WITHIN GROUP (ORDER BY deptno) names \r\n"
+				+ "FROM emp2 GROUP BY deptno";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			Map<Integer, String[]> map = new HashMap<>();
+			while(rs.next()) {
+				int deptno = rs.getInt("DEPTNO");
+				int cnt = rs.getInt("사원수");
+				String names = rs.getString("NAMES");
+				map.put(deptno, names.split("\\,"));
+			} return map;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public PageItem getPage(int page, int ipp)
 	{
 		conn = getConn();
