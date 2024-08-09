@@ -14,7 +14,7 @@ $(function() {
  });
  
  function userInput() {
-	 if(!confirm('add?')) return;
+	 if(!confirm('사용자 정보를 추가하시겠습니까?')) return;
 	 let cmd = $('#cmd').val();	// document.querySelector('#cmd').value
 	 let uid = $('#uid').val();	
 	 let pwd = $('#pwd').val();	
@@ -32,11 +32,15 @@ $(function() {
 			dataType:'json',
 			success:function(res){
 				alert(res.added?'add success':'add failed');
+				if(res.added) {
+					alert(res.cause);
+					location.href = "user?cmd=detail&uid=" + uid;
+				}
 			},
 			error:function(xhr, status, err) {
 				alert('err: ' + err);
 			}
-		 });
+	});
  }
 </script>
 
